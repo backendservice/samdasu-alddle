@@ -15,7 +15,7 @@ message RegisterRequest {
   string destination = 3;
   int32 expense = 4;
   int32 duration = 5;
-  string from_date = 6;
+  string from_date = 6; // TODO add iso type
   string to_date = 7;
 }
 
