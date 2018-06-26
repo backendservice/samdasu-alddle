@@ -10,6 +10,7 @@ service Alddle {
 }
 
 message RegisterRequest {
+  string id = 8;
   string email = 1;
   string departure = 2;
   string destination = 3;

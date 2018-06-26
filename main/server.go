@@ -14,9 +14,20 @@ const (
 	port = ":50051"
 )
 
+var registeredList []*pb.RegisterRequest
+
 type server struct{}
 
-func (s *server) Register(context.Context, *pb.RegisterRequest) (*pb.RegisterReply, error) {
+func (s *server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
+
+	for _, v := range registeredList {
+		if (*v).Id == req.Id {
+			return &pb.RegisterReply{}, nil
+		}
+	}
+
+	registeredList = append(registeredList, req)
+
 	return &pb.RegisterReply{}, nil
 }
 
