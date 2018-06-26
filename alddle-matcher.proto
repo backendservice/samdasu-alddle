@@ -1,0 +1,40 @@
+syntax = "proto3"
+
+package samdasualddle;
+
+// The alddle service definition.
+service Alddle {
+  rpc Register (RegisterRequest) returns (RegisterReply) {}
+  rpc Unregister (UnregisterRequest) returns (UnregisterReply) {}
+  rpc MatchAndNotify (MatchAndNotifyRequest) returns (MatchAndNotifyReply) {}
+}
+
+// The request message containing the user's name.
+message RegisterRequest {
+  string email = 1;
+  string departure = 2;
+  string destination = 3;
+  int32 expense = 4;
+  int32 duration = 5;
+  string from = 6;
+  string to = 7;
+}
+
+message RegisterReply {
+  
+}
+
+message UnregisterRequest {
+  string registerId = 1;
+}
+
+message UnregisterReply {
+  string message = 1;
+}
+
+message MatchAndNotifyRequest {
+}
+
+message MatchAndNotifyReply {
+    
+}
