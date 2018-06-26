@@ -20,10 +20,8 @@ type server struct{}
 
 func (s *server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.RegisterReply, error) {
 
-	for _, v := range registeredList {
-		if (*v).Id == req.Id {
-			return &pb.RegisterReply{}, nil
-		}
+	if find(req.Id) != -1 {
+		return &pb.RegisterReply{}, nil
 	}
 
 	registeredList = append(registeredList, req)
@@ -31,7 +29,20 @@ func (s *server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.Reg
 	return &pb.RegisterReply{}, nil
 }
 
-func (s *server) Unregister(context.Context, *pb.UnregisterRequest) (*pb.UnregisterReply, error) {
+func find(id string) int {
+	for i, v := range registeredList {
+		if (*v).Id == id {
+			return i
+		}
+	}
+	return -1
+}
+
+func (s *server) Unregister(ctx context.Context, req *pb.UnregisterRequest) (*pb.UnregisterReply, error) {
+	i := find(req.RegisterId)
+	if i != -1 {
+		registeredList = append(registeredList[:i], registeredList[i+1:]...)
+	}
 	return &pb.UnregisterReply{}, nil
 }
 

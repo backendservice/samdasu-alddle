@@ -11,6 +11,7 @@ import (
 func TestRegister(t *testing.T) {
 	ctx := context.Background()
 	req := &pb.RegisterRequest{
+		Id:          "A",
 		Email:       "hodol.kang@gmail.com",
 		Departure:   "Seoul",
 		Destination: "Osaka",
@@ -21,6 +22,21 @@ func TestRegister(t *testing.T) {
 	}
 
 	instance := new(server)
-	_, err := instance.Register(ctx, req)
-	assert.NoError(t, err)
+	assert.Equal(t, 0, len(registeredList))
+	_, err1 := instance.Register(ctx, req)
+	_, err2 := instance.Register(ctx, req)
+	assert.Equal(t, 1, len(registeredList))
+	assert.NoError(t, err1)
+	assert.NoError(t, err2)
+}
+func TestUnregister(t *testing.T) {
+	ctx := context.Background()
+	instance := new(server)
+	instance.Register(ctx, &pb.RegisterRequest{Id: "A"})
+	instance.Register(ctx, &pb.RegisterRequest{Id: "B"})
+	assert.Equal(t, 2, len(registeredList))
+	instance.Unregister(ctx, &pb.UnregisterRequest{RegisterId: "A"})
+	instance.Unregister(ctx, &pb.UnregisterRequest{RegisterId: "A"})
+	assert.Equal(t, 1, len(registeredList))
+
 }
