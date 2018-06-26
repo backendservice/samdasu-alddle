@@ -1,4 +1,4 @@
-syntax = "proto3"
+syntax = "proto3";
 
 package samdasualddle;
 
@@ -9,15 +9,14 @@ service Alddle {
   rpc MatchAndNotify (MatchAndNotifyRequest) returns (MatchAndNotifyReply) {}
 }
 
-// The request message containing the user's name.
 message RegisterRequest {
   string email = 1;
   string departure = 2;
   string destination = 3;
   int32 expense = 4;
   int32 duration = 5;
-  string from = 6;
-  string to = 7;
+  string fromDate = 6;
+  string toDate = 7;
 }
 
 message RegisterReply {
