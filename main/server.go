@@ -26,6 +26,7 @@ func (s *server) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.Reg
 
 	registeredList = append(registeredList, req)
 
+	log.Println("====={}", len(registeredList))
 	return &pb.RegisterReply{}, nil
 }
 
