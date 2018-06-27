@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"os"
 	"strconv"
@@ -29,7 +28,11 @@ func main() {
 	defer conn.Close()
 	c := pb.NewAlddleClient(conn)
 
-	flag.Parse()
+	if len(os.Args) < 3 {
+		log.Println("usage: go run main.go [EMAIL] [EXPENSE]")
+		return
+	}
+
 	email := os.Args[1]
 	expense, _ := strconv.Atoi(os.Args[2])
 
