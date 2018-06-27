@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net"
 
 	"github.com/SherClockHolmes/webpush-go"
@@ -53,7 +54,11 @@ func (s *server) Unregister(ctx context.Context, req *pb.UnregisterRequest) (*pb
 }
 
 func (s *server) MatchAndNotify(context.Context, *pb.MatchAndNotifyRequest) (*pb.MatchAndNotifyReply, error) {
-	log.Println("Matched ~~, Notified to ~~")
+	for _, v := range registeredList {
+		if rand.Float64() < 0.1 {
+			log.Println("Match found! sent email to", v.Email, "id=", v.Id)
+		}
+	}
 	return &pb.MatchAndNotifyReply{}, nil
 }
 
