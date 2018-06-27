@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"log"
 	"net"
 
+	"github.com/SherClockHolmes/webpush-go"
 	pb "github.com/backendservice/samdasu-alddle"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -12,6 +15,7 @@ import (
 
 const (
 	port = ":50051"
+	// vapidPrivateKey = "<YOUR VAPID PRIVATE KEY>"
 )
 
 var registeredList []*pb.RegisterRequest
@@ -65,5 +69,36 @@ func main() {
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
+	}
+
+	subJSON := `{
+		"endpoint": "https://fcm.googleapis.com/fcm/send/fazRZn_0WNg:APA91bFNIkM1CpfnXFgRjeGRlxjNHoIrYUZZrDUK2_wMNDzglHGxCzKpCe_163qU1FVusiiHcrxm2h5ar1fko83L7m-XtJoulvEmCIBc-lQ-ka9nQAB1OL2I7DW4bTFo_5-JeFKt4DUbAxNjRRp22y3rvOp0K4zIJQ",
+		"expirationTime": null,
+		"keys": {
+		  "p256dh": "BM0wnPcg7JKFFXaCM9NYy9ePuV-HEgnfQR0BbwVUy7k4tu_ZF-x-oklQ1lk326JnpB5p10QbISLrijoDiTb4SFo",
+		  "auth": "Gtkcbdw7JiOHQDZCbVxjhA"
+		}
+	  }`
+
+	privateKey, _, vapidErr := webpush.GenerateVAPIDKeys()
+	if vapidErr != nil {
+		// TODO: Handle failure!
+	}
+
+	vapidPrivateKey := privateKey
+
+	// Decode subscription
+	subscription := webpush.Subscription{}
+	if err := json.NewDecoder(bytes.NewBufferString(subJSON)).Decode(&s); err != nil {
+		log.Fatal(err)
+	}
+
+	// Send Notification
+	_, subErr := webpush.SendNotification([]byte("Test"), &subscription, &webpush.Options{
+		Subscriber:      "<EMAIL@EXAMPLE.COM>",
+		VAPIDPrivateKey: vapidPrivateKey,
+	})
+	if subErr != nil {
+		log.Fatal(subErr)
 	}
 }
