@@ -7,8 +7,7 @@ ADD . $GOPATH/src/github.com/backendservice/samdasu-alddle
 
 WORKDIR $GOPATH/src/github.com/backendservice/samdasu-alddle
 
-RUN go get -u github.com/golang/dep/cmd/dep
-RUN dep init
+RUN go get -u github.com/golang/dep/...
 RUN dep ensure
 
 EXPOSE 50051

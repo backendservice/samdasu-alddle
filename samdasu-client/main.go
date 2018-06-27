@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/satori/go.uuid"
@@ -27,28 +29,28 @@ func main() {
 	defer conn.Close()
 	c := pb.NewAlddleClient(conn)
 
-	// Contact the server and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
-	msg, err := register(context.Background(), c, time.Minute, name)
+	flag.Parse()
+	email := os.Args[1]
+	expense, _ := strconv.Atoi(os.Args[2])
+
+	_, err = register(context.Background(), c, time.Minute, email, int32(expense))
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
+	} else {
+		log.Println("Enjoy holiday with samdasu")
 	}
-	log.Println("Started : {}", msg)
 }
 
-func register(ctx context.Context, c pb.AlddleClient, timeout time.Duration, name string) (string, error) {
+func register(ctx context.Context, c pb.AlddleClient, timeout time.Duration, email string, expense int32) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
-	id, _ := uuid.NewV4()
+	id := uuid.NewV4()
 	_, err := c.Register(ctx, &pb.RegisterRequest{
 		Id:          id.String(),
-		Email:       "hodol.kang@gmail.com",
+		Email:       email,
 		Departure:   "Seoul",
 		Destination: "Osaka",
-		Expense:     1000000,
+		Expense:     expense,
 		Duration:    4,
 		FromDate:    "20180701",
 		ToDate:      "20180831",
