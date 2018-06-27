@@ -24,10 +24,11 @@ func main() {
 		c := pb.NewAlddleClient(conn)
 		_, err = call(context.Background(), c, time.Minute)
 		if err != nil {
-			log.Println("could not greet: ", err)
+			log.Println("could not call: ", err)
+		} else {
+			log.Println("called")
 		}
 		time.Sleep(1 * time.Second)
-		log.Println("called")
 	}
 }
 
