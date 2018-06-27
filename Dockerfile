@@ -12,5 +12,5 @@ RUN dep init
 RUN dep ensure
 
 EXPOSE 50051
-RUN go build -o server ./server
+RUN go build -o server ./samdasu-server
 CMD ["./server"]
