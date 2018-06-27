@@ -49,6 +49,7 @@ func (s *server) Unregister(ctx context.Context, req *pb.UnregisterRequest) (*pb
 }
 
 func (s *server) MatchAndNotify(context.Context, *pb.MatchAndNotifyRequest) (*pb.MatchAndNotifyReply, error) {
+	log.Println("Matched ~~, Notified to ~~")
 	return &pb.MatchAndNotifyReply{}, nil
 }
 
