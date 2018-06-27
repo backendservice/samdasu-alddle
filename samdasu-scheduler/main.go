@@ -18,13 +18,13 @@ func main() {
 		// Set up a connection to the server.
 		conn, err := grpc.Dial(address, grpc.WithInsecure())
 		if err != nil {
-			log.Println("did not connect: %v", err)
+			log.Println("did not connect: ", err)
 		}
 		defer conn.Close()
 		c := pb.NewAlddleClient(conn)
 		_, err = call(context.Background(), c, time.Minute)
 		if err != nil {
-			log.Println("could not greet: %v", err)
+			log.Println("could not greet: ", err)
 		}
 		time.Sleep(1 * time.Second)
 		log.Println("called")
